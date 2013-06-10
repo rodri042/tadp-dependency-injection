@@ -1,7 +1,5 @@
 package com.tadp.grupo3.dependency_injection.fixture;
 
-import com.tadp.grupo3.dependency_injection.Inyectar;
-
 public class MdxPeliculasHome extends PeliculasHome {
 	Logger logger;
 	
@@ -9,7 +7,6 @@ public class MdxPeliculasHome extends PeliculasHome {
 		return logger;
 	}
 
-	@Inyectar
 	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
