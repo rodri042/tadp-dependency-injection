@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
 import com.tadp.grupo3.dependency_injection.exceptions.YaExisteBindingException;
 import com.tadp.grupo3.dependency_injection.fixture.EnMemoriaPeliculasHome;
+import com.tadp.grupo3.dependency_injection.fixture.MailSender;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
 import com.tadp.grupo3.dependency_injection.framework.Inyectador;
@@ -37,5 +38,18 @@ public class InyectadorTest {
 	public void agregarBinding_falla_al_bindear_objeto_ya_bindeado() {
 		this.contexto.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class);
 		this.contexto.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class);
+	}
+	
+	@Test
+	public void obtenerObjeto_crea_un_objeto_por_constructor() {
+		this.contexto
+			.agregarBinding("MailSender", MailSender.class)
+			.agregarArgumento("MailSender", "algo@algo.com")
+			.agregarArgumento("MailSender", "unacontraseña123secreta")
+			.agregarArgumento("MailSender", "smtp.algo.com")
+			.agregarArgumento("MailSender", 2013);
+		
+		MailSender elSender = (MailSender) this.contexto.obtenerObjeto("MailSender");
+		assertTrue(elSender instanceof MailSender);
 	}
 }

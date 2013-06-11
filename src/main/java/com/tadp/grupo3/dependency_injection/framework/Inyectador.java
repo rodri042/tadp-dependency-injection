@@ -13,12 +13,19 @@ public class Inyectador {
 		this.bindings = new HashMap<String, Binding>();
 	}
 	
-	public void agregarBinding(String id, Class<?> clase) {
+	public Inyectador agregarBinding(String id, Class<?> clase) {
 		if (this.bindings.containsKey(id))
 			throw new YaExisteBindingException();
 		
 		Binding binding = new Binding(clase);
-		bindings.put(id, binding);
+		this.bindings.put(id, binding);
+		return this;
+	}
+	
+	public Inyectador agregarArgumento(String idBinding, Object argumento) {
+		Binding binding = this.obtenerBinding(idBinding);
+		binding.agregarArgumento(argumento);
+		return this;
 	}
 
 	public Object obtenerObjeto(String id) {
