@@ -6,7 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
+import com.tadp.grupo3.dependency_injection.exceptions.YaExisteBindingException;
 import com.tadp.grupo3.dependency_injection.fixture.EnMemoriaPeliculasHome;
+import com.tadp.grupo3.dependency_injection.fixture.MongoDbPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
 import com.tadp.grupo3.dependency_injection.framework.Inyectador;
 
@@ -26,8 +28,14 @@ public class InyectadorTest {
 		assertTrue(elHome instanceof EnMemoriaPeliculasHome);
 	}
 	
-	@Test(expected=NoExisteBindingException.class)
+	@Test(expected = NoExisteBindingException.class)
 	public void obtenerObjeto_falla_al_pedir_objeto_no_bindeado() {
-		PeliculasHome elHome = (PeliculasHome) this.contexto.obtenerObjeto("PeliculasHome");
+		this.contexto.obtenerObjeto("PeliculasHome");
+	}
+	
+	@Test(expected = YaExisteBindingException.class)
+	public void agregarBinding_falla_al_bindear_objeto_ya_bindeado() {
+		this.contexto.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class);
+		this.contexto.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class);
 	}
 }
