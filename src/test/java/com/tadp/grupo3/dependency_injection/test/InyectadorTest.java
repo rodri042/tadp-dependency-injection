@@ -13,58 +13,82 @@ import com.tadp.grupo3.dependency_injection.fixture.MongoDbLogger;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
 import com.tadp.grupo3.dependency_injection.framework.ArgumentoPorId;
-import com.tadp.grupo3.dependency_injection.framework.Inyectador;
+import com.tadp.grupo3.dependency_injection.framework.InyectadorPorAccessors;
+import com.tadp.grupo3.dependency_injection.framework.InyectadorPorConstructor;
 
 public class InyectadorTest {
-	private Inyectador contexto;
-	
-	@Before
-	public void setUp() {
-		this.contexto = new Inyectador();
-	}
-	
 	@Test
 	public void obtenerObjeto_crea_un_objeto_del_tipo_especificado_en_el_binding() {
-		this.contexto.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class);
+		InyectadorPorConstructor contexto = new InyectadorPorConstructor();
 		
-		PeliculasHome elHome = (PeliculasHome) this.contexto.obtenerObjeto("PeliculasHome");
+		contexto.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class);
+		
+		PeliculasHome elHome = (PeliculasHome) contexto.obtenerObjeto("PeliculasHome");
 		assertTrue(elHome instanceof EnMemoriaPeliculasHome);
 	}
 	
 	@Test(expected = NoExisteBindingException.class)
 	public void obtenerObjeto_falla_al_pedir_objeto_no_bindeado() {
-		this.contexto.obtenerObjeto("PeliculasHome");
+		InyectadorPorConstructor contexto = new InyectadorPorConstructor();
+		
+		contexto.obtenerObjeto("PeliculasHome");
 	}
 	
 	@Test(expected = YaExisteBindingException.class)
 	public void agregarBinding_falla_al_bindear_objeto_ya_bindeado() {
-		this.contexto
+		InyectadorPorConstructor contexto = new InyectadorPorConstructor();
+		
+		contexto
 			.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class)
 			.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class);
 	}
 	
 	@Test
 	public void obtenerObjeto_crea_un_objeto_por_constructor() {
-		this.contexto
-			.agregarBinding("MailSender", MailSender.class)
+		InyectadorPorConstructor contexto = new InyectadorPorConstructor();
+		
+		contexto.agregarBinding("MailSender", MailSender.class);
+		contexto
 			.agregarArgumento("MailSender", "algo@algo.com")
 			.agregarArgumento("MailSender", "unacontraseña123secreta")
 			.agregarArgumento("MailSender", "smtp.algo.com")
 			.agregarArgumento("MailSender", 2013);
 		
-		MailSender elSender = (MailSender) this.contexto.obtenerObjeto("MailSender");
+		MailSender elSender = (MailSender) contexto.obtenerObjeto("MailSender");
 		assertTrue(elSender instanceof MailSender);
 	}
 	
 	@Test
 	public void obtenerObjeto_crea_un_objeto_por_constructor_bindeando_ids() {
-		this.contexto
+		InyectadorPorConstructor contexto = new InyectadorPorConstructor();
+		
+		contexto
 			.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class)
-			.agregarArgumento("PeliculasHome", new ArgumentoPorId("Logger"));
+			.agregarBinding("Logger", MongoDbLogger.class);
+			
+		contexto.agregarArgumento("PeliculasHome", new ArgumentoPorId("Logger"));
 		
-		this.contexto.agregarBinding("Logger", MongoDbLogger.class);
-		
-		PeliculasHome elHome = (PeliculasHome) this.contexto.obtenerObjeto("PeliculasHome");
+		PeliculasHome elHome = (PeliculasHome) contexto.obtenerObjeto("PeliculasHome");
 		assertTrue(elHome instanceof MongoDbPeliculasHome);
 	}
+	
+	@Test
+	public void obtenerObjeto_crea_un_objeto_por_accessors() {
+		InyectadorPorAccessors contexto = new InyectadorPorAccessors();
+		
+		contexto.agregarBinding("MailSender", MailSender.class);
+		contexto
+			.agregarAtributo("usuario", "papa@frita.net")
+			.agregarAtributo("passworrd", "notedoymiclave")
+			.agregarAtributo("smtp", "smtp.gmail.com")
+			.agregarAtributo("puerto", 3389);
+		
+		MailSender unMailSender = (MailSender) contexto.obtenerObjeto("MailSender");
+		assertEquals("papa@frita.net", unMailSender.getUsuario());
+		assertEquals("notedoymiclave", unMailSender.getPassword());
+		assertEquals("smtp.gmail.com", unMailSender.getSmtp());
+		assertEquals((Integer) 3389, unMailSender.getPuerto());
+	}
+	
+	/* Hacer el test de PeliculasHome y MdxPeliculasHome */
 }
