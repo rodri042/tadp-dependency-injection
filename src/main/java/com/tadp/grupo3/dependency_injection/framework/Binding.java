@@ -15,10 +15,9 @@ public class Binding {
 		try {
 			return this.clase.newInstance();
 		} catch (InstantiationException e) {
-			new SeRompioTodoException();
+			throw new SeRompioTodoException();
 		} catch (IllegalAccessException e) {
-			new SeRompioTodoException();
+			throw new SeRompioTodoException();
 		}
-		return null;
 	}
 }

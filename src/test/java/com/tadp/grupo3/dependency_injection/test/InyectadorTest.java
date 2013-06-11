@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
 import com.tadp.grupo3.dependency_injection.fixture.EnMemoriaPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
 import com.tadp.grupo3.dependency_injection.framework.Inyectador;
@@ -23,5 +24,10 @@ public class InyectadorTest {
 		
 		PeliculasHome elHome = (PeliculasHome) this.contexto.obtenerObjeto("PeliculasHome");
 		assertTrue(elHome instanceof EnMemoriaPeliculasHome);
+	}
+	
+	@Test(expected=NoExisteBindingException.class)
+	public void obtenerObjeto_falla_al_pedir_objeto_no_bindeado() {
+		PeliculasHome elHome = (PeliculasHome) this.contexto.obtenerObjeto("PeliculasHome");
 	}
 }
