@@ -38,8 +38,9 @@ public class InyectadorTest {
 	
 	@Test(expected = YaExisteBindingException.class)
 	public void agregarBinding_falla_al_bindear_objeto_ya_bindeado() {
-		this.contexto.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class);
-		this.contexto.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class);
+		this.contexto
+			.agregarBinding("PeliculasHome", EnMemoriaPeliculasHome.class)
+			.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class);
 	}
 	
 	@Test
