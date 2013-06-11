@@ -3,11 +3,9 @@ package com.tadp.grupo3.dependency_injection.framework;
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
 
 public class Binding {
-	private String id;
 	private Class<?> clase;
 	
-	public Binding(String id, Class<?> clase) {
-		this.id = id;
+	public Binding(Class<?> clase) {
 		this.clase = clase;
 	}
 

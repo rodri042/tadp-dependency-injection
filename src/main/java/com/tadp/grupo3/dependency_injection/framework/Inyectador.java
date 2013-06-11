@@ -17,7 +17,7 @@ public class Inyectador {
 		if (this.bindings.containsKey(id))
 			throw new YaExisteBindingException();
 		
-		Binding binding = new Binding(id, clase);
+		Binding binding = new Binding(clase);
 		bindings.put(id, binding);
 	}
 
