@@ -5,14 +5,19 @@ public class MailSender {
 	String password;
 	String smtp;
 	Integer puerto;
-	
-	public MailSender(String usuario, String password, String smtp, Integer puerto) {
+
+	public MailSender(String usuario, String password, String smtp,
+			Integer puerto) {
 		this.usuario = usuario;
 		this.password = password;
 		this.smtp = smtp;
 		this.puerto = puerto;
 	}
-	
+
+	public MailSender() {
+
+	}
+
 	public String getUsuario() {
 		return usuario;
 	}
@@ -27,5 +32,21 @@ public class MailSender {
 
 	public Integer getPuerto() {
 		return puerto;
+	}
+
+	public void setUsuario(String unUsuario) {
+		this.usuario = unUsuario;
+	}
+
+	public void setPassword(String unaPassword) {
+		this.usuario = unaPassword;
+	}
+
+	public void setSmtp(String unSmtp) {
+		this.smtp = unSmtp;
+	}
+
+	public void setPuerto(Integer unPuerto) {
+		this.puerto = unPuerto;
 	}
 }
