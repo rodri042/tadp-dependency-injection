@@ -79,7 +79,7 @@ public class InyectadorTest {
 		contexto.agregarBinding("MailSender", MailSender.class);
 		contexto
 			.agregarAtributo("MailSender", "usuario", "papa@frita.net")
-			.agregarAtributo("MailSender", "passworrd", "notedoymiclave")
+			.agregarAtributo("MailSender", "password", "notedoymiclave")
 			.agregarAtributo("MailSender", "smtp", "smtp.gmail.com")
 			.agregarAtributo("MailSender", "puerto", 3389);
 		
