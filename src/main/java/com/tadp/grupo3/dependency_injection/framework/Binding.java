@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.tadp.grupo3.dependency_injection.exceptions.NingunConstructorValidoException;
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
@@ -11,20 +12,22 @@ import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
 public class Binding {
 	private Class<?> clase;
 	private List<Object> argumentos;
-	
+
 	public Binding(Class<?> clase) {
 		this.clase = clase;
 		this.argumentos = new ArrayList<Object>();
 	}
-	
+
 	public void agregarArgumento(Object argumento) {
 		this.argumentos.add(argumento);
 	}
-	
-	public Object instanciar() {
-		Constructor constructor = this.elegirConstructor();
+
+	public Object instanciar(Inyectador framework) {
+		Object[] argumentos = this.procesarBindings(framework);
+		
+		Constructor constructor = this.elegirConstructor(argumentos);
 		try {
-			return constructor.newInstance(this.argumentos.toArray());
+			return constructor.newInstance(argumentos);
 		} catch (InstantiationException e) {
 			throw new SeRompioTodoException();
 		} catch (IllegalAccessException e) {
@@ -36,24 +39,37 @@ public class Binding {
 		}
 	}
 
-	private Constructor elegirConstructor() {
-		Constructor<?>[] constructores = this.clase.getConstructors();
+	private Object[] procesarBindings(Inyectador framework) {
+		Object[] argumentos = this.argumentos.toArray();
 		
+		for (int i=0; i < argumentos.length; i++) {
+			if (argumentos[i].getClass() == ArgumentoPorId.class) {
+				ArgumentoPorId argumento = (ArgumentoPorId) argumentos[i];
+				
+				argumentos[i] = framework.obtenerObjeto(argumento.getId());
+			}
+		}
+		return argumentos;
+	}
+
+	private Constructor elegirConstructor(Object[] argumentos) {
+		Constructor<?>[] constructores = this.clase.getConstructors();
+
 		for (Constructor constructor : constructores) {
-			if (this.puedoUsarElConstructor(constructor))
+			if (this.puedoUsarElConstructor(constructor, argumentos))
 				return constructor;
 		}
 		throw new NingunConstructorValidoException();
 	}
 
-	private boolean puedoUsarElConstructor(Constructor constructor) {
-		//map a la colección de argumentos, comparar con los del constructor
+	private boolean puedoUsarElConstructor(Constructor constructor, Object[] argumentos) {
+		// map a la colección de argumentos, comparar con los del constructor
 		Class<?>[] tiposDeParametro = constructor.getParameterTypes();
-		for (int i=0; i < tiposDeParametro.length; i++) {
-			Class<?> tipoBindeado = this.argumentos.get(i).getClass();
+		for (int i = 0; i < tiposDeParametro.length; i++) {
+			Class<?> tipoBindeado = argumentos[i].getClass();
 			Class<?> tipoConstructor = tiposDeParametro[i];
-			
-			if (tipoBindeado != tipoConstructor)
+
+			if (!tipoConstructor.isAssignableFrom(tipoBindeado))
 				return false;
 		}
 		return true;

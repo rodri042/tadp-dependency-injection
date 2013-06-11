@@ -31,7 +31,7 @@ public class Inyectador {
 	public Object obtenerObjeto(String id) {
 		return this
 			.obtenerBinding(id)
-			.instanciar();
+			.instanciar(this);
 	}
 	
 	private Binding obtenerBinding(String id) {

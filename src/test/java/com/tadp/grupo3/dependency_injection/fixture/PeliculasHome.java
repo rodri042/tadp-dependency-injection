@@ -8,8 +8,5 @@ public abstract class PeliculasHome {
 	}
 	public void setLogger(Logger logger) {
 		this.logger = logger;
-	}
-	
-	public abstract String[] dameTodasTusPeliculas();
-	
+	}	
 }

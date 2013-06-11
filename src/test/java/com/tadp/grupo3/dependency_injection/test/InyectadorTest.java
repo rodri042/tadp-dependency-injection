@@ -9,8 +9,10 @@ import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
 import com.tadp.grupo3.dependency_injection.exceptions.YaExisteBindingException;
 import com.tadp.grupo3.dependency_injection.fixture.EnMemoriaPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.MailSender;
+import com.tadp.grupo3.dependency_injection.fixture.MongoDbLogger;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
+import com.tadp.grupo3.dependency_injection.framework.ArgumentoPorId;
 import com.tadp.grupo3.dependency_injection.framework.Inyectador;
 
 public class InyectadorTest {
@@ -51,5 +53,17 @@ public class InyectadorTest {
 		
 		MailSender elSender = (MailSender) this.contexto.obtenerObjeto("MailSender");
 		assertTrue(elSender instanceof MailSender);
+	}
+	
+	@Test
+	public void obtenerObjeto_crea_un_objeto_por_constructor_bindeando_ids() {
+		this.contexto
+			.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class)
+			.agregarArgumento("PeliculasHome", new ArgumentoPorId("Logger"));
+		
+		this.contexto.agregarBinding("Logger", MongoDbLogger.class);
+		
+		PeliculasHome elHome = (PeliculasHome) this.contexto.obtenerObjeto("PeliculasHome");
+		assertTrue(elHome instanceof MongoDbPeliculasHome);
 	}
 }
