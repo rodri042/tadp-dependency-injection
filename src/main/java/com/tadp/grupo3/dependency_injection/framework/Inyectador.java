@@ -7,20 +7,20 @@ import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
 import com.tadp.grupo3.dependency_injection.exceptions.YaExisteBindingException;
 
 public abstract class Inyectador {
-	protected Map<String, BindingPorConstructor> bindings;
+	protected Map<String, Binding> bindings;
 	
 	public Inyectador() {
-		this.bindings = new HashMap<String, BindingPorConstructor>();
+		this.bindings = new HashMap<String, Binding>();
 	}
 	
 	public Inyectador agregarBinding(String id, Class<?> clase) {
 		if (this.bindings.containsKey(id))
 			throw new YaExisteBindingException();
 		
-		BindingPorConstructor binding = new BindingPorConstructor(clase);
-		this.bindings.put(id, binding);
+		this.nuevoBindingPara(id, clase);
 		return this;
 	}
+	protected abstract void nuevoBindingPara(String id, Class<?> clase);
 
 	public Object obtenerObjeto(String id) {
 		return this
@@ -28,8 +28,8 @@ public abstract class Inyectador {
 			.instanciar(this);
 	}
 	
-	protected BindingPorConstructor obtenerBinding(String id) {
-		BindingPorConstructor binding = this.bindings.get(id);
+	protected Binding obtenerBinding(String id) {
+		Binding binding = this.bindings.get(id);
 		if (binding == null)
 			throw new NoExisteBindingException();
 		return binding;

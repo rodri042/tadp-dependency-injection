@@ -5,4 +5,8 @@ public class InyectadorPorAccessors extends Inyectador {
 		//TODO
 		return this;
 	}
+	
+	protected void nuevoBindingPara(String id, Class<?> clase) {
+		//TODO
+	}
 }
