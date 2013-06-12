@@ -6,17 +6,16 @@ public class MailSender {
 	String smtp;
 	Integer puerto;
 
-	public MailSender(String usuario, String password, String smtp,
-			Integer puerto) {
+	public MailSender(String usuario, String password, String smtp, Integer puerto) {
 		this.usuario = usuario;
 		this.password = password;
 		this.smtp = smtp;
 		this.puerto = puerto;
 	}
 
-	public MailSender() { // Para inyectar por accesors, necesitamos que la clase tenga al menos un constructor sin parametros
-						   // ya que class.newInstance() instancia un objeto solo si el constructor no tiene parametros.
-
+	public MailSender() {
+		// Para inyectar por accesors, necesitamos que la clase tenga al menos un constructor sin parametros
+		// ya que class.newInstance() instancia un objeto solo si el constructor no tiene parametros.
 	}
 
 	public String getUsuario() {

@@ -7,8 +7,7 @@ public class InyectadorPorConstructor extends Inyectador {
 		return this;
 	}
 	
-	protected void nuevoBindingPara(String id, Class<?> clase) {
-		BindingPorConstructor binding = new BindingPorConstructor(clase);
-		this.bindings.put(id, binding);
+	protected Binding nuevoBindingPara(String id, Class<?> clase) {
+		return new BindingPorConstructor(clase);
 	}
 }

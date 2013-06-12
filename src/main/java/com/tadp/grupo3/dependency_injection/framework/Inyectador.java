@@ -17,10 +17,10 @@ public abstract class Inyectador {
 		if (this.bindings.containsKey(id))
 			throw new YaExisteBindingException();
 		
-		this.nuevoBindingPara(id, clase);
+		this.bindings.put(id, this.nuevoBindingPara(id, clase));
 		return this;
 	}
-	protected abstract void nuevoBindingPara(String id, Class<?> clase);
+	protected abstract Binding nuevoBindingPara(String id, Class<?> clase);
 
 	public Object obtenerObjeto(String id) {
 		return this
