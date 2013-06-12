@@ -8,7 +8,8 @@ import java.util.List;
 import com.tadp.grupo3.dependency_injection.exceptions.NoHayConstructorVacioException;
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
 
-public class BindingPorAccessor implements Binding {
+//Binding que conoce la clase a instanciar y los setters a ejecutar
+public class BindingPorAccessor extends Binding {
 	private Class<?> clase;
 	private List<Setter> setters;
 
@@ -23,7 +24,7 @@ public class BindingPorAccessor implements Binding {
 			
 			for (Setter unSetter : setters) {
 				Method unMethod = unSetter.getMethod();
-				unMethod.invoke(unObjeto, unSetter.getValor());
+				unMethod.invoke(unObjeto, this.procesarObjetoPorId(framework, unSetter.getValor()));
 			}
 			
 			return unObjeto;

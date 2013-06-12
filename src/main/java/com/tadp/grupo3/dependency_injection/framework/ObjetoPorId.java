@@ -1,9 +1,10 @@
 package com.tadp.grupo3.dependency_injection.framework;
 
-public class ArgumentoPorId {
+//Representa una referencia a un objeto por su id bindeado
+public class ObjetoPorId {
 	private String id;
 	
-	public ArgumentoPorId(String id) {
+	public ObjetoPorId(String id) {
 		this.id = id;
 	}
 	

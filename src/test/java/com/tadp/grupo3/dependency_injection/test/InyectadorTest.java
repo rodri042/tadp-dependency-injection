@@ -13,7 +13,7 @@ import com.tadp.grupo3.dependency_injection.fixture.MdxPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbLogger;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
-import com.tadp.grupo3.dependency_injection.framework.ArgumentoPorId;
+import com.tadp.grupo3.dependency_injection.framework.ObjetoPorId;
 import com.tadp.grupo3.dependency_injection.framework.InyectadorPorAccessors;
 import com.tadp.grupo3.dependency_injection.framework.InyectadorPorConstructor;
 
@@ -68,7 +68,7 @@ public class InyectadorTest {
 			.agregarBinding("PeliculasHome", MongoDbPeliculasHome.class)
 			.agregarBinding("Logger", MongoDbLogger.class);
 			
-		contexto.agregarArgumento("PeliculasHome", new ArgumentoPorId("Logger"));
+		contexto.agregarArgumento("PeliculasHome", new ObjetoPorId("Logger"));
 		
 		PeliculasHome elHome = (PeliculasHome) contexto.obtenerObjeto("PeliculasHome");
 		assertTrue(elHome instanceof MongoDbPeliculasHome);
@@ -102,8 +102,8 @@ public class InyectadorTest {
 			.agregarBinding("CineController", CineController.class);
 		
 		contexto
-			.agregarAtributo("PeliculasHome", "logger", new ArgumentoPorId("Logger"))
-			.agregarAtributo("CineController", "peliculasHome", new ArgumentoPorId("PeliculasHome"));
+			.agregarAtributo("PeliculasHome", "logger", new ObjetoPorId("Logger"))
+			.agregarAtributo("CineController", "peliculasHome", new ObjetoPorId("PeliculasHome"));
 		
 		CineController unController = (CineController) contexto.obtenerObjeto("CineController");
 		

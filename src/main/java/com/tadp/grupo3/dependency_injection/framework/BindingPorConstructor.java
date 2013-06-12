@@ -8,7 +8,8 @@ import java.util.List;
 import com.tadp.grupo3.dependency_injection.exceptions.NingunConstructorValidoException;
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
 
-public class BindingPorConstructor implements Binding {
+//Binding que conoce la clase a instanciar y los objetos para el constructor
+public class BindingPorConstructor extends Binding {
 	private Class<?> clase;
 	private List<Object> argumentos;
 
@@ -22,7 +23,7 @@ public class BindingPorConstructor implements Binding {
 	}
 
 	public Object instanciar(Inyectador framework) {
-		Object[] argumentos = this.procesarBindings(framework);
+		Object[] argumentos = this.procesarObjetosPorId(framework);
 		
 		Constructor<?> constructor = this.elegirConstructor(argumentos);
 		try {
@@ -38,19 +39,19 @@ public class BindingPorConstructor implements Binding {
 		}
 	}
 
-	private Object[] procesarBindings(Inyectador framework) {
+	//Convierte todos los objetos por id en los objetos reales
+	private Object[] procesarObjetosPorId(Inyectador framework) {
 		Object[] argumentos = this.argumentos.toArray();
 		
-		for (int i=0; i < argumentos.length; i++) {
-			if (argumentos[i].getClass() == ArgumentoPorId.class) {
-				ArgumentoPorId argumento = (ArgumentoPorId) argumentos[i];
-				
-				argumentos[i] = framework.obtenerObjeto(argumento.getId());
-			}
-		}
+		//map
+		for (int i=0; i < argumentos.length; i++)
+			argumentos[i] = this.procesarObjetoPorId(framework, argumentos[i]);
+		
 		return argumentos;
 	}
 
+	//Elige el constructor que matchee con los argumentos bindeados
+	//Si hay muchos, se queda con el primero, si no hay ninguno rompe
 	private Constructor<?> elegirConstructor(Object[] argumentos) {
 		Constructor<?>[] constructores = this.clase.getConstructors();
 
@@ -61,6 +62,7 @@ public class BindingPorConstructor implements Binding {
 		throw new NingunConstructorValidoException();
 	}
 
+	//Determina si los argumentos bindeados me permiten usar un constructor dado
 	private boolean puedoUsarElConstructor(Constructor<?> constructor, Object[] argumentos) {
 		// map a la colección de argumentos, comparar con los del constructor
 		Class<?>[] tiposDeParametro = constructor.getParameterTypes();

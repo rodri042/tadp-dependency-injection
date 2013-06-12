@@ -2,6 +2,7 @@ package com.tadp.grupo3.dependency_injection.framework;
 
 import java.lang.reflect.Method;
 
+//Representa un setter a ejecutar, con el valor a asignar
 public class Setter {
 	private Method method;
 	private Object valor;
