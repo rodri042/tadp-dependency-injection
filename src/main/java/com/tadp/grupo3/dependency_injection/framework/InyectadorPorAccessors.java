@@ -12,14 +12,14 @@ public class InyectadorPorAccessors extends Inyectador {
 			//TODO: Arreglar esto de instanciar un nuevo objeto cada vez que le agrego un atributo.
 			// Deberia solo instanciar una vez. Y devolver siempre la misma instancias.
 			
-			Object unObjeto = this.obtenerObjeto(idBinding);
-			Class<?> clase = unObjeto.getClass();
+			BindingPorAccessor unBindingPorAccesor = (BindingPorAccessor) this.obtenerBinding(idBinding); // Le pido el binding en vez de pedirle el objeto directo
+			Class<?> clase = unBindingPorAccesor.getClase();
 
 			Method[] metodos = clase.getMethods();
 
 			for (Method unMetodo : metodos) {
 				if (EsElSetterBuscado(unMetodo, nombre)) {
-					unMetodo.invoke(unObjeto, valor);
+					unBindingPorAccesor.addSetter(new Setter(unMetodo,valor));
 					break;
 				}
 
@@ -27,13 +27,9 @@ public class InyectadorPorAccessors extends Inyectador {
 			
 			return this;
 
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);
 		} catch (IllegalArgumentException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}

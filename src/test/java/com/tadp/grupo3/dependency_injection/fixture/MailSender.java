@@ -14,7 +14,8 @@ public class MailSender {
 		this.puerto = puerto;
 	}
 
-	public MailSender() {
+	public MailSender() { // Para inyectar por accesors, necesitamos que la clase tenga al menos un constructor sin parametros
+						   // ya que class.newInstance() instancia un objeto solo si el constructor no tiene parametros.
 
 	}
 
@@ -39,7 +40,7 @@ public class MailSender {
 	}
 
 	public void setPassword(String unaPassword) {
-		this.usuario = unaPassword;
+		this.password = unaPassword;
 	}
 
 	public void setSmtp(String unSmtp) {
