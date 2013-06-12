@@ -10,12 +10,4 @@ public class MdxPeliculasHome extends PeliculasHome {
 	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
-
-	public String[] dameTodasTusPeliculas() {
-		return null;
-	}
-
-	public String getCadenaDeConexion() {
-		return null;
-	}
 }

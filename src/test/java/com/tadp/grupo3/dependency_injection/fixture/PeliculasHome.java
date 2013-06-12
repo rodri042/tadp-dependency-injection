@@ -1,8 +1,8 @@
 package com.tadp.grupo3.dependency_injection.fixture;
 
 public abstract class PeliculasHome {
-	
 	private Logger logger;
+	
 	public Logger getLogger() {
 		return this.logger;
 	}

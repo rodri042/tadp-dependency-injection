@@ -6,8 +6,10 @@ import org.junit.Test;
 
 import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
 import com.tadp.grupo3.dependency_injection.exceptions.YaExisteBindingException;
+import com.tadp.grupo3.dependency_injection.fixture.CineController;
 import com.tadp.grupo3.dependency_injection.fixture.EnMemoriaPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.MailSender;
+import com.tadp.grupo3.dependency_injection.fixture.MdxPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbLogger;
 import com.tadp.grupo3.dependency_injection.fixture.MongoDbPeliculasHome;
 import com.tadp.grupo3.dependency_injection.fixture.PeliculasHome;
@@ -90,5 +92,22 @@ public class InyectadorTest {
 		assertEquals((Integer) 3389, unMailSender.getPuerto());
 	}
 	
-	/* Hacer el test de PeliculasHome y MdxPeliculasHome */
+	@Test
+	public void obtenerObjeto_crea_un_objeto_por_accessors_a_varios_niveles() {
+		InyectadorPorAccessors contexto = new InyectadorPorAccessors();
+		
+		contexto
+			.agregarBinding("Logger", MongoDbLogger.class)
+			.agregarBinding("PeliculasHome", MdxPeliculasHome.class)
+			.agregarBinding("CineController", CineController.class);
+		
+		contexto
+			.agregarAtributo("PeliculasHome", "logger", new ArgumentoPorId("Logger"))
+			.agregarAtributo("CineController", "peliculasHome", new ArgumentoPorId("PeliculasHome"));
+		
+		CineController unController = (CineController) contexto.obtenerObjeto("CineController");
+		
+		assertTrue(unController.getPeliculasHome() instanceof MdxPeliculasHome);
+		assertTrue(unController.getPeliculasHome().getLogger() instanceof MongoDbLogger);	
+	}
 }

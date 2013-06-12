@@ -3,10 +3,8 @@ package com.tadp.grupo3.dependency_injection.fixture;
 import java.util.List;
 
 public class PeliculasController {
-
 	private PeliculasHome homePeliculas;
 	private List<PeliculasHome> homesPeliculas;
-	
 	public String cadena;
 	
 	public PeliculasController(PeliculasHome unHome){

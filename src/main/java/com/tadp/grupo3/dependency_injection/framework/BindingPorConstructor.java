@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.tadp.grupo3.dependency_injection.exceptions.NingunConstructorValidoException;
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
@@ -25,7 +24,7 @@ public class BindingPorConstructor implements Binding {
 	public Object instanciar(Inyectador framework) {
 		Object[] argumentos = this.procesarBindings(framework);
 		
-		Constructor constructor = this.elegirConstructor(argumentos);
+		Constructor<?> constructor = this.elegirConstructor(argumentos);
 		try {
 			return constructor.newInstance(argumentos);
 		} catch (InstantiationException e) {
@@ -52,17 +51,17 @@ public class BindingPorConstructor implements Binding {
 		return argumentos;
 	}
 
-	private Constructor elegirConstructor(Object[] argumentos) {
+	private Constructor<?> elegirConstructor(Object[] argumentos) {
 		Constructor<?>[] constructores = this.clase.getConstructors();
 
-		for (Constructor constructor : constructores) {
+		for (Constructor<?> constructor : constructores) {
 			if (this.puedoUsarElConstructor(constructor, argumentos))
 				return constructor;
 		}
 		throw new NingunConstructorValidoException();
 	}
 
-	private boolean puedoUsarElConstructor(Constructor constructor, Object[] argumentos) {
+	private boolean puedoUsarElConstructor(Constructor<?> constructor, Object[] argumentos) {
 		// map a la colección de argumentos, comparar con los del constructor
 		Class<?>[] tiposDeParametro = constructor.getParameterTypes();
 		for (int i = 0; i < tiposDeParametro.length; i++) {
