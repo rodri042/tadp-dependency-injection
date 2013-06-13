@@ -66,7 +66,12 @@ public class BindingPorConstructor extends Binding {
 	private boolean puedoUsarElConstructor(Constructor<?> constructor, Object[] argumentos) {
 		// map a la colección de argumentos, comparar con los del constructor
 		Class<?>[] tiposDeParametro = constructor.getParameterTypes();
-		for (int i = 0; i < tiposDeParametro.length; i++) {
+		int argumentosEsperados = tiposDeParametro.length;
+		
+		if (argumentos.length != argumentosEsperados)
+			return false;
+		
+		for (int i = 0; i < argumentosEsperados; i++) {
 			Class<?> tipoBindeado = argumentos[i].getClass();
 			Class<?> tipoConstructor = tiposDeParametro[i];
 
