@@ -6,8 +6,8 @@ import java.util.Map;
 import com.tadp.grupo3.dependency_injection.exceptions.NoExisteBindingException;
 import com.tadp.grupo3.dependency_injection.exceptions.YaExisteBindingException;
 
-//Es el framework genérico
-public abstract class Inyectador {
+//Es el framework
+public class Inyectador {
 	protected Map<String, Binding> bindings;
 	
 	public Inyectador() {
@@ -15,16 +15,17 @@ public abstract class Inyectador {
 	}
 	
 	//Agrega un binding a su colección de bindings
-	public Inyectador agregarBinding(String id, Class<?> clase) {
+	public BindingBuilder agregar(String id, Class<?> clase) {
 		if (this.bindings.containsKey(id))
 			throw new YaExisteBindingException();
 		
-		this.bindings.put(id, this.nuevoBindingPara(id, clase));
-		return this;
+		return new BindingBuilder(id, clase, this);
 	}
 	
-	//Delega a las subclases la instanciación del tipo de binding
-	protected abstract Binding nuevoBindingPara(String id, Class<?> clase);
+	public Inyectador agregar(String id, Binding binding) {
+		this.bindings.put(id, binding);
+		return this;
+	}
 
 	//Crea un objeto a partir de un id de binding
 	public Object obtenerObjeto(String id) {
