@@ -9,7 +9,7 @@ import com.tadp.grupo3.dependency_injection.exceptions.NoHayConstructorVacioExce
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
 
 //Binding que conoce la clase a instanciar y los setters a ejecutar
-public class BindingPorAccessor extends Binding {
+public class BindingPorAccessor implements Binding {
 	private Class<?> clase;
 	private List<Setter> setters;
 
@@ -24,7 +24,7 @@ public class BindingPorAccessor extends Binding {
 			
 			for (Setter unSetter : setters) {
 				Method unMethod = unSetter.getMethod();
-				unMethod.invoke(unObjeto, this.procesarObjetoPorId(framework, unSetter.getValor()));
+				unMethod.invoke(unObjeto, framework.procesarObjetoPorId(unSetter.getValor()));
 			}
 			
 			return unObjeto;

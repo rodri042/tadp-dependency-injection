@@ -14,7 +14,7 @@ public class Inyectador {
 		this.bindings = new HashMap<String, Binding>();
 	}
 	
-	//Agrega un binding a su colección de bindings
+	//Retorna un constructor de bindings para poder configurarlo
 	public BindingBuilder agregar(String id, Class<?> clase) {
 		if (this.bindings.containsKey(id))
 			throw new YaExisteBindingException();
@@ -22,6 +22,7 @@ public class Inyectador {
 		return new BindingBuilder(id, clase, this);
 	}
 	
+	//Agrega un binding a su colección de bindings
 	public Inyectador agregar(String id, Binding binding) {
 		this.bindings.put(id, binding);
 		return this;
@@ -32,6 +33,13 @@ public class Inyectador {
 		return this
 			.obtenerBinding(id)
 			.instanciar(this);
+	}
+	
+	//Obtiene el objeto real, si el objeto dado es una referencia a otro binding
+	public Object procesarObjetoPorId(Object objeto) {
+		return objeto.getClass() == ObjetoPorId.class
+			? ((ObjetoPorId) objeto).obtenerObjetoReal(this)
+			: objeto;
 	}
 	
 	//Obtiene el binding correspondiente a partir del id

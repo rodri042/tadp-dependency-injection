@@ -9,7 +9,7 @@ import com.tadp.grupo3.dependency_injection.exceptions.NingunConstructorValidoEx
 import com.tadp.grupo3.dependency_injection.exceptions.SeRompioTodoException;
 
 //Binding que conoce la clase a instanciar y los objetos para el constructor
-public class BindingPorConstructor extends Binding {
+public class BindingPorConstructor implements Binding {
 	private Class<?> clase;
 	private List<Object> argumentos;
 
@@ -45,7 +45,7 @@ public class BindingPorConstructor extends Binding {
 		
 		//map
 		for (int i=0; i < argumentos.length; i++)
-			argumentos[i] = this.procesarObjetoPorId(framework, argumentos[i]);
+			argumentos[i] = framework.procesarObjetoPorId(argumentos[i]);
 		
 		return argumentos;
 	}
