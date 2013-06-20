@@ -7,11 +7,8 @@ public abstract class Binding {
 	
 	//Obtiene el objeto real, si el objeto dado es una referencia a otro binding
 	protected Object procesarObjetoPorId(Inyectador framework, Object objeto) {
-		if (objeto.getClass() == ObjetoPorId.class) {
-			ObjetoPorId objetoPorId = (ObjetoPorId) objeto;
-			
-			return framework.obtenerObjeto(objetoPorId.getId());
-		} else
-			return objeto;
+		return objeto.getClass() == ObjetoPorId.class
+			? ((ObjetoPorId) objeto).obtenerObjetoReal(framework)
+			: objeto;
 	}
 }

@@ -11,4 +11,8 @@ public class ObjetoPorId {
 	public String getId() {
 		return this.id;
 	}
+
+	public Object obtenerObjetoReal(Inyectador framework) {
+		return framework.obtenerObjeto(this.getId());
+	}
 }
