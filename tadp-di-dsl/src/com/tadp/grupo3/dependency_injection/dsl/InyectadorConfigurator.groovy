@@ -1,14 +1,14 @@
 package com.tadp.grupo3.dependency_injection.dsl;
+import com.tadp.grupo3.dependency_injection.framework.*
 
 public class InyectadorConfigurator {
-	Inyectador framework;
+	def framework
 	
-	InyectadorConfigurator(Inyectador framework) {
+	InyectadorConfigurator(framework) {
 		this.framework = framework;
 	}
 	
 	def propertyMissing(String idBinding) {
-		3
-		//new IdBinding(idBinding)
+		new IdBinding(idBinding, framework)
 	}
 }
