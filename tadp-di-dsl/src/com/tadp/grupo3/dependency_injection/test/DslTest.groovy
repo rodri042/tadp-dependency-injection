@@ -12,13 +12,19 @@ public class DslTest {
 		new Dsl()
 		
 		def framework = new Inyectador()
-		def sender = framework.dijeramosQue {
+		framework.dijeramosQue {
 			"MailSender" es un MailSender.class con {
 				un "usuario" igualA "algo@algo.com"
-				/*un "password" igualA "unPassword"
-				un "puerto" igualA 3389*/
+				un "password" igualA "unPassword"
+				un "puerto" igualA 3389
 			}
 		}
-		assertEquals(sender instanceof MailSender)
+		
+		def sender = framework.obtenerObjeto("MailSender")
+		assertTrue(sender instanceof MailSender)
+		assertEquals("algo@algo.com", sender.getUsuario())
+		assertEquals("unPassword", sender.getPassword())
+		assertEquals(3389, sender.getPuerto())
+		
 	}
 }

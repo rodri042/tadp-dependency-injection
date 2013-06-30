@@ -12,7 +12,11 @@ public class Dsl {
 		}
 		
 		BindingBuilder.metaClass.con = { bloque ->
-			new BindingConfigurator(delegate).with bloque
+			delegate.with bloque
+		}
+		
+		BindingBuilder.metaClass.un = { nombre ->
+			new IdAtributo(nombre, delegate)
 		}
 	}	
 }
