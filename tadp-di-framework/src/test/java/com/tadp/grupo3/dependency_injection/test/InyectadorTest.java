@@ -106,6 +106,6 @@ public class InyectadorTest {
 		CineController unController = (CineController) contexto.obtenerObjeto("CineController");
 		
 		assertTrue(unController.getPeliculasHome() instanceof MdxPeliculasHome);
-		assertTrue(unController.getPeliculasHome().getLogger() instanceof MongoDbLogger);	
+		assertTrue(unController.getPeliculasHome().getLogger() instanceof MongoDbLogger);
 	}
 }

@@ -3,7 +3,9 @@ import com.tadp.grupo3.dependency_injection.dsl.*
 import static com.tadp.grupo3.dependency_injection.dsl.Dsl.*
 import com.tadp.grupo3.dependency_injection.framework.*
 import com.tadp.grupo3.dependency_injection.fixture.*
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class DslTest {
@@ -43,5 +45,45 @@ public class DslTest {
 		assertEquals("algo@algo.com", sender.getUsuario())
 		assertEquals("unPassword", sender.getPassword())
 		assertEquals(3389, sender.getPuerto())
+	}
+	
+	@Test
+	public void "El dsl funciona usando objetos por Id"() {
+		new Dsl()
+		
+		def framework = new Inyectador()
+		framework.dijeramosQue {
+			"PeliculasHome" es un MongoDbPeliculasHome.class con {
+				constructor(new ObjetoPorId("Logger"))
+			}
+			"Logger" es un MongoDbLogger.class con {
+				constructor()
+			}
+		}
+		
+		def home = framework.obtenerObjeto("PeliculasHome")
+		assertTrue(home instanceof MongoDbPeliculasHome)
+	}
+	
+	@Test
+	public void "El dsl funciona usando objetos por Id mediante 'referenciando'"() {
+		new Dsl()
+		
+		def framework = new Inyectador()
+		framework.dijeramosQue {
+			"Logger" es un MongoDbLogger.class con {
+				constructor()
+			}
+			"PeliculasHome" es un MdxPeliculasHome.class con {
+				un "logger" referenciando "Logger"
+			}
+			"CineController" es un CineController.class con {
+				un "peliculasHome" referenciando "PeliculasHome"
+			}
+		}
+		
+		def cine = framework.obtenerObjeto("CineController")
+		assertTrue(cine.getPeliculasHome() instanceof MdxPeliculasHome);
+		assertTrue(cine.getPeliculasHome().getLogger() instanceof MongoDbLogger);
 	}
 }
