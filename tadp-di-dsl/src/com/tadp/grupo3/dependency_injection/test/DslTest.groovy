@@ -9,17 +9,19 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DslTest {
+	static {
+		new Dsl()
+	}
+	
 	@Test
 	public void "El dsl puede configurar un objeto por constructor"() {
-		new Dsl()
-		
 		def framework = new Inyectador()
 		framework.dijeramosQue {
 			"MailSender" es un MailSender.class con {
 				constructor "mail@password.net",
-						   "unPassword",
-						   "unsmtp.dominio.com.ar",
-						   3389
+							"unPassword",
+							"unsmtp.dominio.com.ar",
+							3389
 			}
 		}
 		
@@ -29,8 +31,6 @@ public class DslTest {
 	
 	@Test
 	public void "El dsl puede configurar un objeto por setters"() {
-		new Dsl()
-		
 		def framework = new Inyectador()
 		framework.dijeramosQue {
 			"MailSender" es un MailSender.class con {
@@ -49,8 +49,6 @@ public class DslTest {
 	
 	@Test
 	public void "El dsl funciona usando objetos por Id"() {
-		new Dsl()
-		
 		def framework = new Inyectador()
 		framework.dijeramosQue {
 			"PeliculasHome" es un MongoDbPeliculasHome.class con {
@@ -67,8 +65,6 @@ public class DslTest {
 	
 	@Test
 	public void "El dsl funciona usando objetos por Id mediante 'referenciando'"() {
-		new Dsl()
-		
 		def framework = new Inyectador()
 		framework.dijeramosQue {
 			"Logger" es un MongoDbLogger.class con {
