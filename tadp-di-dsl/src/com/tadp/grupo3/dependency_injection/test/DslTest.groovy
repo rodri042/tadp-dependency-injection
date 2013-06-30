@@ -8,7 +8,25 @@ import org.junit.Test;
 
 public class DslTest {
 	@Test
-	public void test1() {
+	public void "El dsl puede configurar un objeto por constructor"() {
+		new Dsl()
+		
+		def framework = new Inyectador()
+		framework.dijeramosQue {
+			"MailSender" es un MailSender.class con {
+				constructor "mail@password.net",
+						   "unPassword",
+						   "unsmtp.dominio.com.ar",
+						   3389
+			}
+		}
+		
+		def sender = framework.obtenerObjeto("MailSender")
+		assertTrue(sender instanceof MailSender)
+	}
+	
+	@Test
+	public void "El dsl puede configurar un objeto por setters"() {
 		new Dsl()
 		
 		def framework = new Inyectador()
@@ -25,6 +43,5 @@ public class DslTest {
 		assertEquals("algo@algo.com", sender.getUsuario())
 		assertEquals("unPassword", sender.getPassword())
 		assertEquals(3389, sender.getPuerto())
-		
 	}
 }

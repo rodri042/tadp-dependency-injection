@@ -8,15 +8,9 @@ public class Dsl {
 	
 	static {
 		Inyectador.metaClass.dijeramosQue = { bloque ->
-			new InyectadorConfigurator(delegate).with bloque
+			new DefinicionBinding(delegate).with bloque
 		}
 		
-		BindingBuilder.metaClass.con = { bloque ->
-			delegate.with bloque
-		}
-		
-		BindingBuilder.metaClass.un = { nombre ->
-			new IdAtributo(nombre, delegate)
-		}
+		BindingBuilder.mixin(BindingBuilderDsl)
 	}	
 }
