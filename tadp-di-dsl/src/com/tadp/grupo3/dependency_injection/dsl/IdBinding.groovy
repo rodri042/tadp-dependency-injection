@@ -9,7 +9,7 @@ class IdBinding {
 		this.framework = framework
 	}
 	
-	def esUn(clase) {
+	def un(clase) {
 		this.framework.agregar(this.nombre, clase)
 	}
 }

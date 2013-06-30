@@ -1,5 +1,6 @@
 package com.tadp.grupo3.dependency_injection.test;
 import com.tadp.grupo3.dependency_injection.dsl.*
+import static com.tadp.grupo3.dependency_injection.dsl.Dsl.*
 import com.tadp.grupo3.dependency_injection.framework.*
 import com.tadp.grupo3.dependency_injection.fixture.*
 import static org.junit.Assert.*;
@@ -11,13 +12,13 @@ public class DslTest {
 		new Dsl()
 		
 		def framework = new Inyectador()
-		framework.dijeramosQue {
-			"MailSender" esUn MailSender.class con {
+		def sender = framework.dijeramosQue {
+			"MailSender" es un MailSender.class con {
 				un "usuario" igualA "algo@algo.com"
-				un "password" igualA "unPassword"
-				un "puerto" igualA 3389
+				/*un "password" igualA "unPassword"
+				un "puerto" igualA 3389*/
 			}
 		}
-		
+		assertEquals(sender instanceof MailSender)
 	}
 }
