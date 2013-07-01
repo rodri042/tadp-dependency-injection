@@ -55,9 +55,7 @@ public class DslTest {
 			"PeliculasHome" es un MongoDbPeliculasHome.class con {
 				constructor(new ObjetoPorId("Logger"))
 			}
-			"Logger" es un MongoDbLogger.class con {
-				constructor()
-			}
+			"Logger" es un MongoDbLogger.class con constructorVacio
 		}
 		
 		def home = framework.obtenerObjeto("PeliculasHome")
@@ -67,9 +65,7 @@ public class DslTest {
 	@Test
 	public void "El dsl funciona usando objetos por Id mediante 'referenciando'"() {
 		framework.dijeramosQue {
-			"Logger" es un MongoDbLogger.class con {
-				constructor()
-			}
+			"Logger" es un MongoDbLogger.class con constructorVacio
 			"PeliculasHome" es un MdxPeliculasHome.class con {
 				un "logger" referenciando "Logger"
 			}
