@@ -6,7 +6,7 @@ public class DefinicionBinding {
 	def framework
 	
 	DefinicionBinding(framework) {
-		this.framework = framework;
+		this.framework = framework
 	}
 	
 	def methodMissing(String idBinding, es) {

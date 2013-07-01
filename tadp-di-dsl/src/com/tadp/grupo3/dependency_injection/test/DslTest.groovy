@@ -53,7 +53,7 @@ public class DslTest {
 	public void "El dsl funciona usando objetos por Id"() {
 		framework.dijeramosQue {
 			"PeliculasHome" es un MongoDbPeliculasHome.class con {
-				constructor(new ObjetoPorId("Logger"))
+				constructor new ObjetoPorId("Logger")
 			}
 			"Logger" es un MongoDbLogger.class con constructorVacio
 		}
